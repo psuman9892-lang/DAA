@@ -1,0 +1,76 @@
+//Write a recursive program to find the solution of placing n queens on chess board so that no queen
+//takes each other (backtracking).
+
+//TC O(N!)
+
+import java.util.Scanner;
+
+public class Assignment8 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter number of queens: ");
+        int n = sc.nextInt();
+
+        int board[][] = new int[n][n];
+
+        if (!nQueens(board, n, 0)) {
+            System.out.println("No solution exists");
+        }
+
+    }
+
+    public static boolean nQueens(int board[][], int n, int k){
+        if(k == n){
+            printBoard(board);
+            return true;
+        }
+
+        for(int c=0; c < n; c++){
+            if(isSafe(board, k, c)){
+                board[k][c] = 1;
+                if(nQueens(board, n, k+1)){
+                    return true;
+                }
+                board[k][c] = 0;
+            }
+        }
+        return  false;
+    }
+
+    private static void printBoard(int[][] board) {
+        System.out.println("Solution");
+
+        int n = board.length;
+
+        for(int i=0; i < n; i++){
+            for (int j=0; j < n; j++){
+                System.out.print(board[i][j]+ " ");
+            }
+            System.out.println();
+        }
+    }
+
+    public static boolean isSafe(int[][] board, int k, int c){
+        int n = board.length;
+        
+        for(int i=0; i < k; i++){
+            if(board[i][c] == 1){
+                return  false;
+            }
+        }
+
+        for(int i=k-1, j = c-1; i >= 0 && j >= 0; i--, j--){
+            if(board[i][j] == 1) {
+                return false;
+            }
+        }
+
+        for (int i=k-1, j = c+1; i >= 0 && j < n; i--, j++){
+            if(board[i][j] == 1){
+                return false;
+            }
+        }
+        return true;
+    }
+}
