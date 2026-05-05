@@ -1,0 +1,40 @@
+//Write a program to implement optimal storage tape using greedy approach.
+
+//Time Complexity
+//Sorting: O(n log n)
+//Calculation: O(n)
+//Overall: O(n log n)
+
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Assignment3 {
+    public static void main(String args[]){
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter the number of files");
+        int n = sc.nextInt();
+
+        int arr[] = new int[n];
+        System.out.println("Enter the length of files");
+        for(int i=0; i < n; i++){
+            arr[i] = sc.nextInt();
+        }
+
+        Arrays.sort(arr);
+        int totalRetrievalTime = 0;
+        int sum = 0;
+        for(int i=0; i< n; i++){
+            sum += arr[i];
+            totalRetrievalTime += sum;
+        }
+        double mrt = (double) totalRetrievalTime/n;
+
+        System.out.println("Optimal order of files");
+        System.out.println(Arrays.toString(arr));
+
+        System.out.println("Total Retrieval Time: "+ totalRetrievalTime);
+        System.out.println("Mean Retrieval Time: "+ mrt);
+
+    }
+}
