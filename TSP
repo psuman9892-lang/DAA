@@ -1,0 +1,70 @@
+//TC: O(N!)
+
+import java.util.Scanner;
+
+public class Assignment10 {
+    static int n;
+    static int[][] cost;
+    static boolean[] vis;
+    static int finalCost = Integer.MAX_VALUE;
+    static int[] finalPath;
+
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter number of cities: ");
+        n = sc.nextInt();
+
+        cost = new int[n][n];
+        vis = new boolean[n];
+        finalPath = new int[n+1];
+
+        System.out.println("Enter cost matrix: ");
+        for(int i=0; i < n; i++){
+            for(int j=0; j < n; j++){
+                cost[i][j] = sc.nextInt();
+            }
+        }
+        vis[0] = true;
+        int currPath[] = new int[n+1];
+        currPath[0] = 0;
+
+        tsp(1, 0, currPath);
+
+        System.out.println("Minimum cost: "+ finalCost);
+        System.out.print("Path: ");
+        for(int i=0; i <= n; i++){
+            System.out.print(finalPath[i]+ " ");
+        }
+    }
+
+    public static void tsp(int level, int currCost, int currPath[]){
+        if(level == n){
+            if(cost[currPath[level-1]][currPath[0]] != 0){
+                int totalCost = currCost + cost[currPath[level-1]][currPath[0]];
+
+                if(totalCost < finalCost){
+                    finalCost = totalCost;
+
+                    System.arraycopy(currPath, 0, finalPath, 0, n);
+                    finalPath[n] = currPath[0];
+                }
+            }
+            return;
+        }
+
+        for(int i=0; i < n; i++){
+            if(!vis[i] && cost[currPath[level-1]][i] != 0){
+                int newCost = currCost + cost[currPath[level-1]][i];
+
+                if(newCost < finalCost){
+                    currPath[level] = i;
+                    vis[i] = true;
+                    tsp(level+1, newCost, currPath);
+                    vis[i] = false;
+                }
+            }
+        }
+
+    }
+}
