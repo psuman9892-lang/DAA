@@ -1,0 +1,46 @@
+//Implement program to find minimum and maximum element from given list using Divide and Conquer.
+
+//Time Complexity
+//T(n) = 2T(n/2) + O(1)
+//Overall: O(n)
+
+import java.util.Scanner;
+
+public class Assignment2 {
+    public static void main(String args[]){
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter the number of elements");
+        int n = sc.nextInt();
+
+        int arr[] = new int[n];
+        System.out.println("Enter the numbers");
+        for(int i=0; i < n; i++){
+            arr[i] = sc.nextInt();
+        }
+
+        int ans[] = minMax(arr, 0, n-1);
+        System.out.println("Minimum element: "+ ans[0] + " and Maximum element: "+ ans[1]);
+    }
+
+    public static int[] minMax(int arr[], int l, int r){
+        if(l == r){
+            return new int[]{arr[l], arr[l]};
+        }
+        else if(l+1 == r){
+            if(arr[l] < arr[r]){
+                return new int[]{arr[l], arr[r]};
+            }
+            else{
+                return new int[]{arr[r], arr[l]};
+            }
+        }
+        int mid = (l+r)/2;
+        int leftMinMax[] = minMax(arr, l, mid);
+        int rightMinMax[] = minMax(arr, mid+1, r);
+
+        int finalMin = Math.min(leftMinMax[0], rightMinMax[0]);
+        int finalMax = Math.max(leftMinMax[1], rightMinMax[1]);
+        return  new int[]{finalMin, finalMax};
+    }
+}
