@@ -1,0 +1,68 @@
+import java.util.Scanner;
+import java.util.Stack;
+
+public class HamiltonianPath {
+
+    static int v;
+    static int[][] graph;
+
+    public static void main(String[] args) {
+        Scanner sc= new Scanner(System.in);
+
+        System.out.println("Enter number of vertices: ");
+        v = sc.nextInt();
+        graph = new int[v][v];
+
+        System.out.println("Enter adjacency matrix: ");
+        for(int i=0; i < v; i++){
+            for(int j=0; j < v; j++){
+                graph[i][j] = sc.nextInt();
+            }
+        }
+
+        for(int start=0; start < v; start++){
+            Stack<Integer> st = new Stack<>();
+            st.push(start);
+
+            int pos = 0;
+            int path[] = new int[v];
+            path[pos++] = start;
+
+            boolean vis[] = new boolean[v];
+            vis[start] = true;
+
+            int next[] = new int[v];
+            while(!st.isEmpty()){
+                int curr = st.peek();
+                boolean found = false;
+
+                for(int i= next[curr]; i < v; i++){
+                    next[curr] = i+1;
+                    if(graph[curr][i] == 1 && !vis[i]){
+                        vis[i] = true;
+                        path[pos++] = i;
+                        st.push(i);
+                        found = true;
+                        break;
+                    }
+                }
+                if(pos == v){
+                    System.out.println("Hamiltonian Path: ");
+                    for(int i=0; i < v; i++){
+                        System.out.print(path[i]+" ");
+                    }
+                    System.out.println();
+                    return;
+                }
+
+                if(!found){
+                    int removed = st.pop();
+                    vis[removed] = false;
+                    pos--;
+                    next[removed] = 0;
+                }
+            }
+        }
+        System.out.println("Hamiltonian cycle doesn't exist");
+    }
+}
